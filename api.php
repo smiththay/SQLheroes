@@ -3,7 +3,6 @@
 $servername = "localhost";
 $username = "root";
 $password = "Password";
-
 $dbname = "SQLheroes";
 
 // Create connection
@@ -24,12 +23,16 @@ switch ($route) {
     $id = $_GET["hero_id"];
     $myData = getHeroByID($conn, $id);
     break;
+  case "createHero":
+    $myData = createHero($conn);
+    break;
+  case "deleteHero":
+    $myData = deleteHero($conn);
+    break;
   default:
     $myData = json_encode([]);
     
 }
-
-
 
 echo $myData;
 
@@ -55,7 +58,6 @@ $result = $conn->query($sql);
   
 }
 
-
 function getHeroByID ($conn, $heroID){
   
   $data = array();
@@ -73,8 +75,32 @@ $result = $conn->query($sql);
 
   return json_encode($data);
   
-  
 }
+
+function createHero ($conn){
+
+$sql = "INSERT INTO heroes (id, name, about_me, biography, image_url)
+VALUES ('7', 'Repairman', 'repairs stuff thats broke', 'hates his job', 'null')";
+
+if (mysqli_query($conn, $sql)) {
+  echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+}
+}
+
+function deleteHero ($conn){
+  
+$sql = "DELETE FROM heroes WHERE id=7";
+
+if (mysqli_query($conn, $sql)) {
+  echo "Record deleted successfully";
+} else {
+  echo "Error deleting record: " . mysqli_error($conn);
+}
+}
+  
+
 
 
 
